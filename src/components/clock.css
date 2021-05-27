@@ -2,5 +2,21 @@
   width: 70vw;
   height: 70vh;
   margin: 15vh auto 5vh;
-  background-color: blue;
+  background-color: yellow;
+  padding: 25px;
+}
+
+.btnRow {
+  justify-content: center;
+  align-items: center;
+}
+
+.fas {
+  margin: 0 1rem;
+  cursor: pointer;
+}
+
+.timeLength {
+  width: 4rem;
+  justify-content: center;
 }
