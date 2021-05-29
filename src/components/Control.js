@@ -8,7 +8,7 @@ export const Control = props => {
         <h3
           onClick={props.decrease}
         >
-        <i class="fas fa-arrow-down"></i>
+        <i className="fas fa-arrow-down"></i>
         </h3>
 
         <h3
@@ -20,7 +20,7 @@ export const Control = props => {
         <h3
           onClick={props.increase}
         >
-        <i class="fas fa-arrow-up"></i>
+        <i className="fas fa-arrow-up"></i>
         </h3>
       </div>
     </div>

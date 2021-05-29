@@ -1,41 +1,85 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export const Display = props => {
-  const [activity, setActivity] = useState('Study');
-  const [paused, setPaused] = useState(true);
 
   const play = e => {
-    setPaused(false);
-    // restart timer
-
+    if(props.paused) {
+      props.setPaused(false);
+      // restart timer
+      startClock(props.countdownTime)
+    }
   }
 
   const pause = e => {
-    setPaused(true);
+    props.setPaused(true);
     // stop timer
-
+    clearInterval(window.clockRefresh)
   }
 
   const refresh = e => {
     // pause
-    setPaused(true);
+    props.setPaused(true);
+    clearInterval(window.clockRefresh)
     // reset to study
-    setActivity('Study');
+    props.setActivity('Study');
     // reset countdown to sessionLength
-    props.setCountdown(props.sessionLength)
+    props.setCountdownTime(60*props.sessionLength)
   }
 
+  function updateClock(destination) {
+    const remainder = Math.round(destination - (new Date().getTime())/1000)
+    props.setCountdownTime(remainder)
+    if(remainder <= 0) {
+      clearInterval(window.clockRefresh)
+      console.log(props.activity)
+      switchClock()
+    }
+  }
+
+  function startClock(time) {
+    const now = (new Date().getTime())/1000; // current time in seconds
+    const destination = now + time
+    window.clockRefresh = setInterval(() => updateClock(destination), 1000)
+  }
+
+
+  const switchClock = () => {
+    if(props.activity === 'Study') {
+      props.setActivity('Break')
+      props.setCountdownTime(60*props.breakLength)
+      startClock(60*props.breakLength)
+    }
+    else if(props.activity === 'Break') { // activity == 'break'
+      // clearInterval(window.clockRefresh)
+      props.setActivity('Study')
+      props.setCountdownTime(60*props.sessionLength)
+      startClock(60*props.sessionLength)
+    }
+  }
 
   return (
     <div id="display">
       <div className="countdownDisplay">
-        <h3>{activity}</h3>
-        <h1>{props.countdown}</h1>
+        <h3>{props.activity}</h3>
+        <h1>
+          {Math.floor(props.countdownTime/60)}
+          :
+          {
+            ( // if less than 10 seconds, append a 0 to the front
+              (props.countdownTime%60 < 10)
+              ? '0'
+              : ''
+            )
+            +
+            // Remove negative sign when timer hits 0. Beacause of compute time the actual countdown time will be a very small negative number when it should be 0
+            Math.abs(Math.round(props.countdownTime%60))
+          }
+        </h1>
       </div>
       <div className="row btnRow">
-        <h3 onClick={props.play}><i className="fas fa-play"></i></h3>
-        <h3 onClick={props.pause}><i className="fas fa-pause"></i></h3>
-        <h3 onClick={props.refresh}><i className="fas fa-redo"></i></h3>
+        <h3 onClick={play}><i className="fas fa-play"></i></h3>
+        <h3 onClick={pause}><i className="fas fa-pause"></i></h3>
+        <h3 onClick={refresh}><i className="fas fa-redo"></i></h3>
       </div>
     </div>
   )

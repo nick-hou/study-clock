@@ -2,8 +2,19 @@
   width: 70vw;
   height: 70vh;
   margin: 15vh auto 5vh;
-  background-color: yellow;
   padding: 25px;
+}
+
+.clock-paused {
+  background-color: red;
+}
+
+.clock-study {
+  background-color: blue;
+}
+
+.clock-break {
+  background-color: green;
 }
 
 .btnRow {
