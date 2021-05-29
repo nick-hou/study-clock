@@ -6,7 +6,7 @@ export const Display = props => {
     if(props.paused) {
       props.setPaused(false);
       // restart timer
-      startClock(props.countdownTime)
+      startClock(props.countdownTime, props.activity)
     }
   }
 
@@ -26,34 +26,34 @@ export const Display = props => {
     props.setCountdownTime(60*props.sessionLength)
   }
 
-  function updateClock(destination) {
+  function updateClock(destination, activity) {
     const remainder = Math.round(destination - (new Date().getTime())/1000)
     props.setCountdownTime(remainder)
     if(remainder <= 0) {
       clearInterval(window.clockRefresh)
-      console.log(props.activity)
-      switchClock()
+      switchClock(activity)
     }
   }
 
-  function startClock(time) {
+  function startClock(time, activity) {
     const now = (new Date().getTime())/1000; // current time in seconds
     const destination = now + time
-    window.clockRefresh = setInterval(() => updateClock(destination), 1000)
+    window.clockRefresh = setInterval(() => updateClock(destination, activity), 1000)
   }
 
 
-  const switchClock = () => {
-    if(props.activity === 'Study') {
+  const switchClock = activity => {
+    console.log(activity)
+    if(activity === 'Study') {
       props.setActivity('Break')
       props.setCountdownTime(60*props.breakLength)
-      startClock(60*props.breakLength)
+      startClock(60*props.breakLength, 'Break')
     }
-    else if(props.activity === 'Break') { // activity == 'break'
+    else if(activity === 'Break') { // activity == 'break'
       // clearInterval(window.clockRefresh)
       props.setActivity('Study')
       props.setCountdownTime(60*props.sessionLength)
-      startClock(60*props.sessionLength)
+      startClock(60*props.sessionLength, 'Study')
     }
   }
 
