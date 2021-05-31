@@ -5,8 +5,8 @@ import { Display } from './Display';
 
 export const Clock = () => {
 
-  const [breakLength, setBreakLength] = useState(0.1);
-  const [sessionLength, setSessionLength] = useState(0.1);
+  const [breakLength, setBreakLength] = useState(5);
+  const [sessionLength, setSessionLength] = useState(25);
   // Store pause/activity state for CSS control, even though the state is set in the display component
   const [paused, setPaused] = useState(true);
   const [activity, setActivity] = useState('Study');
